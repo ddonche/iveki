@@ -1,0 +1,6 @@
+/// Main entry point
+/// Example imports (uncomment when you create modules):
+/// import game/hero
+/// import data/weapons
+
+say "Welcome to the Horde!"

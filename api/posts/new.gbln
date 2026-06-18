@@ -1,0 +1,9 @@
+html | :render_template("views/posts/new.gbln", nil)
+
+:json_stringify({
+    "status": 200,
+    "headers": {
+        "Content-Type": "text/html; charset=utf-8"
+    },
+    "body": html
+})

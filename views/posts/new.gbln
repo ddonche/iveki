@@ -1,0 +1,27 @@
+<{ render }>
+
+<!doctype html>
+<html>
+<head>
+    <title>New Post</title>
+</head>
+<body>
+    <h1>New Post</h1>
+
+    <form method="POST" action="/posts">
+        <p>
+            <label>Title</label><br>
+            <input type="text" name="title">
+        </p>
+
+        <p>
+            <label>Body</label><br>
+            <textarea name="body"></textarea>
+        </p>
+
+        <p>
+            <button type="submit">Create Post</button>
+        </p>
+    </form>
+</body>
+</html>
