@@ -1,5 +1,10 @@
 <{ render }>
 
+<{ 
+query | :req_query()
+created | :contains(query, "created=1")
+}>
+
 <!doctype html>
 <html>
 <head>
@@ -8,7 +13,11 @@
 <body>
     <h1>New Post</h1>
 
-    <form method="POST" action="/posts">
+    <{ if created }>
+        <p><strong>Shard created.</strong></p>
+    <{ xx }>
+
+    <form method="POST" action="/actions/posts.gbln">
         <p>
             <label>Title</label><br>
             <input type="text" name="title">

@@ -1,0 +1,2533 @@
+import React, { useState } from 'react';
+
+export default function IvekiForumPage() {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [isMember, setIsMember] = useState(true);
+  const [theme, setTheme] = useState('light'); // 'light' or 'dark'
+
+  const portalData = {
+    name: 'Philosophy',
+    description: 'Explore fundamental questions about existence, knowledge, ethics, and the nature of reality. Discuss classical and contemporary philosophical ideas.',
+    color: '#6366f1',
+    members: 12400,
+    created: 'March 2024',
+    creator: 'Dr. Sarah Chen'
+  };
+
+  // Theme colors
+  const colors = theme === 'light' ? {
+    bg: '#f8f9fa',
+    cardBg: 'white',
+    text: '#212529',
+    textSecondary: '#495057',
+    textMuted: '#6c757d',
+    border: '#dee2e6',
+    borderLight: '#e9ecef',
+    footerBg: '#f8f9fa',
+    headerBg: '#1a2332',
+    headerText: 'white',
+    annotationBg: 'white',
+    avatarBg: '#e9ecef',
+    activeBg: '#fff9e6',
+    inputBg: 'rgba(255,255,255,0.9)',
+    tagBg: '#e7f5ff',
+    tagText: '#111c38'           // Dark blue text on light bg
+  } : {
+    bg: '#1a1d24',              // Softer than pure black
+    cardBg: '#242831',          // Cards slightly lighter
+    text: '#c9d1d9',            // Toned down from #e8eaed
+    textSecondary: '#8b949e',   // Toned down from #b8bcc4
+    textMuted: '#6e7681',       // Toned down from #8a8f98
+    border: '#3a3f4a',          // Subtle borders
+    borderLight: '#2d3139',     // Very subtle borders
+    footerBg: '#1f2229',        // Slightly different from bg
+    headerBg: '#0f1115',        // Darker header
+    headerText: '#c9d1d9',      // Toned down from #e8eaed
+    annotationBg: '#242831',    // Same as cards
+    avatarBg: '#2d3139',        // Subtle avatar background
+    activeBg: '#2a2d35',        // Very subtle, just slightly lighter than card
+    inputBg: 'rgba(36,40,49,0.9)', // Slightly transparent card color
+    tagBg: '#111c38',           // Dark blue
+    tagText: '#6e9cd4'          // Toned down blue text
+  };
+
+  const categories = [
+    { id: 'all', name: 'All Topics', color: colors.textMuted, count: 156 },
+    { id: 'general', name: 'General Discussion', color: '#6366f1', count: 45 },
+    { id: 'ethics', name: 'Ethics & Morality', color: '#8b5cf6', count: 38 },
+    { id: 'epistemology', name: 'Epistemology', color: '#ec4899', count: 27 },
+    { id: 'metaphysics', name: 'Metaphysics', color: '#10b981', count: 23 },
+    { id: 'logic', name: 'Logic & Reasoning', color: '#f59e0b', count: 18 },
+    { id: 'political', name: 'Political Philosophy', color: '#ef4444', count: 15 }
+  ];
+
+  const topics = [
+    {
+      id: 0,
+      title: 'Welcome to the Philosophy Forum - Read the Guidelines',
+      category: 'general',
+      categoryColor: '#6366f1',
+      author: { name: 'Dr. Sarah Chen', initials: 'SC' },
+      preview: 'Please read these community guidelines before posting. Be respectful, cite sources, and engage in good faith discussion.',
+      replies: 45,
+      views: 2834,
+      lastActivity: '1 week ago',
+      commenters: [
+        { initials: 'DR' },
+        { initials: 'MR' },
+        { initials: 'LK' },
+        { initials: 'EW' }
+      ],
+      isPinned: true
+    },
+    {
+      id: 1,
+      title: 'Is objective morality possible without religion?',
+      category: 'ethics',
+      categoryColor: '#8b5cf6',
+      author: { name: 'Daniel Reed', initials: 'DR' },
+      preview: 'Been thinking about the Euthyphro dilemma and whether we can ground moral truths in something other than divine command...',
+      replies: 24,
+      views: 342,
+      lastActivity: '2 hours ago',
+      commenters: [
+        { initials: 'SC' },
+        { initials: 'MR' },
+        { initials: 'LK' },
+        { initials: 'EW' },
+        { initials: 'TB' },
+        { initials: 'AM' }
+      ]
+    },
+    {
+      id: 2,
+      title: 'The Ship of Theseus and personal identity',
+      category: 'metaphysics',
+      categoryColor: '#10b981',
+      author: { name: 'Sarah Chen', initials: 'SC' },
+      preview: 'If all our cells replace themselves every 7 years, are we still the same person? What makes identity persistent?',
+      replies: 18,
+      views: 256,
+      lastActivity: '5 hours ago',
+      commenters: [
+        { initials: 'DR' },
+        { initials: 'MR' },
+        { initials: 'LK' }
+      ]
+    },
+    {
+      id: 3,
+      title: 'Best intro resources for studying Kant?',
+      category: 'general',
+      categoryColor: '#6366f1',
+      author: { name: 'Marcus Rodriguez', initials: 'MR' },
+      preview: 'New to Kant and finding the Critique of Pure Reason pretty dense. What would you recommend as a starting point?',
+      replies: 0,
+      views: 89,
+      lastActivity: '1 day ago',
+      commenters: []
+    },
+    {
+      id: 4,
+      title: 'Does knowledge require certainty?',
+      category: 'epistemology',
+      categoryColor: '#ec4899',
+      author: { name: 'Lisa Kumar', initials: 'LK' },
+      preview: 'Exploring the justified true belief account and Gettier problems. Can we know something while acknowledging fallibility?',
+      replies: 31,
+      views: 478,
+      lastActivity: '3 hours ago',
+      commenters: [
+        { initials: 'SC' },
+        { initials: 'DR' },
+        { initials: 'MR' },
+        { initials: 'EW' },
+        { initials: 'TB' },
+        { initials: 'AM' },
+        { initials: 'JE' },
+        { initials: 'KP' }
+      ]
+    },
+    {
+      id: 5,
+      title: 'Validity vs soundness in arguments',
+      category: 'logic',
+      categoryColor: '#f59e0b',
+      author: { name: 'Emma Walsh', initials: 'EW' },
+      preview: 'Can someone explain the difference with examples? I keep confusing these terms.',
+      replies: 12,
+      views: 203,
+      lastActivity: '6 hours ago',
+      commenters: [
+        { initials: 'SC' },
+        { initials: 'DR' },
+        { initials: 'MR' },
+        { initials: 'LK' }
+      ]
+    }
+  ];
+
+  const hotTopics = [
+    { title: 'Is free will compatible with determinism?', replies: 87, categoryColor: '#8b5cf6' },
+    { title: 'The hard problem of consciousness', replies: 64, categoryColor: '#10b981' },
+    { title: 'Effective altruism: ethical obligation?', replies: 52, categoryColor: '#8b5cf6' }
+  ];
+
+  const unanswered = [
+    { title: 'Best intro resources for studying Kant?', views: 89, categoryColor: '#6366f1' },
+    { title: 'Recommendations for philosophy podcasts?', views: 45, categoryColor: '#6366f1' },
+    { title: 'How to approach Heidegger?', views: 67, categoryColor: '#6366f1' }
+  ];
+
+  // Icon Components
+  const PeopleIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+    </svg>
+  );
+
+  const SearchIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M10 2a8 8 0 105.3 14l4.4 4.3a1.5 1.5 0 002.1-2.1l-4.3-4.4A8 8 0 0010 2zm0 3a5 5 0 110 10 5 5 0 010-10z" />
+    </svg>
+  );
+
+  const SunIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  );
+
+  const MoonIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  );
+
+  const BellIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2a2 2 0 012 2v.5a7.5 7.5 0 015 7V15l2 2v1H3v-1l2-2v-3.5a7.5 7.5 0 015-7V4a2 2 0 012-2zm-2 18h4a2 2 0 11-4 0z" />
+    </svg>
+  );
+
+  const MessageIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H6l-4 4V6a2 2 0 012-2zm2 10h12v2H6v-2zm0-3h12v2H6v-2zm0-3h12v2H6V8z" />
+    </svg>
+  );
+
+  const GearIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7zm0-2a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
+      <path d="M19.43 12.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46a.5.5 0 00-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65A.488.488 0 0014 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1a.566.566 0 00-.18-.03c-.17 0-.34.09-.43.25l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46a.5.5 0 00.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.06.02.12.03.18.03.17 0 .34-.09.43-.25l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65z" />
+    </svg>
+  );
+
+  const LogoutIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M5 3h6a2 2 0 012 2v4h-2V5H5v14h6v-4h2v4a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2zm11 4l5 5-5 5v-3H9v-4h7V7z" />
+    </svg>
+  );
+
+  const CommentIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+    </svg>
+  );
+
+  const EyeIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+    </svg>
+  );
+
+  const PinIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/>
+    </svg>
+  );
+
+  const ShareIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+    </svg>
+  );
+
+  const BookmarkIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17 3H7a2 2 0 00-2 2v16l7-3 7 3V5a2 2 0 00-2-2z" />
+    </svg>
+  );
+
+  const FlagIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+    </svg>
+  );
+
+  const LinkIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 000 10h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 000-10z" />
+    </svg>
+  );
+
+  const CopyIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+    </svg>
+  );
+
+  const PaperclipIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+    </svg>
+  );
+
+  const ImageIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+      <circle cx="8.5" cy="8.5" r="1.5"/>
+      <polyline points="21 15 16 10 5 21"/>
+    </svg>
+  );
+
+  const MicIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+      <line x1="12" y1="19" x2="12" y2="23"/>
+      <line x1="8" y1="23" x2="16" y2="23"/>
+    </svg>
+  );
+
+  const ArrowUpToLineIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 3h14"/>
+      <path d="m18 13-6-6-6 6"/>
+      <path d="M12 7v14"/>
+    </svg>
+  );
+
+  const NotificationBadge = ({ count }) => (
+    <div style={{
+      position: 'absolute',
+      top: '-4px',
+      right: '-4px',
+      backgroundColor: '#dc3545',
+      color: 'white',
+      borderRadius: '10px',
+      minWidth: '18px',
+      height: '18px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '0.7rem',
+      fontWeight: '600',
+      padding: '0 4px',
+      border: '2px solid #1a2332'
+    }}>
+      {count}
+    </div>
+  );
+
+  return (
+    <div style={{
+      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      backgroundColor: colors.bg,
+      minHeight: '100vh'
+    }}>
+      {/* Header */}
+      <header style={{
+        backgroundColor: colors.headerBg,
+        color: colors.headerText,
+        padding: '0.5rem 2rem',
+        borderBottom: '2px solid #f9a825'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1.5rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{
+              width: '28px',
+              height: '28px',
+              backgroundColor: '#f9a825',
+              borderRadius: '3px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold',
+              fontSize: '1.1rem',
+              color: '#1a2332'
+            }}>i</div>
+            <span style={{ fontSize: '1.1rem', fontWeight: '600', letterSpacing: '-0.5px' }}>Iveki</span>
+          </div>
+
+          <nav style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+            {['About', 'Portals', 'Courses', 'Forum'].map(link => (
+              <a key={link} href="#" style={{
+                color: 'rgba(255,255,255,0.9)',
+                textDecoration: 'none',
+                fontSize: '0.9rem',
+                fontWeight: '400'
+              }}>{link}</a>
+            ))}
+          </nav>
+
+          <div style={{ flex: 1, maxWidth: '500px' }}>
+            <div style={{ position: 'relative' }}>
+              <div style={{
+                position: 'absolute',
+                left: '0.75rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: '#666',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <SearchIcon />
+              </div>
+              <input type="text" placeholder="Search..." style={{
+                width: '100%',
+                padding: '0.4rem 0.75rem 0.4rem 2.25rem',
+                borderRadius: '3px',
+                border: `1px solid ${colors.border}`,
+                fontSize: '0.85rem',
+                backgroundColor: colors.inputBg,
+                color: colors.text
+              }} />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <button 
+              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.25rem',
+              color: 'rgba(255,255,255,0.8)',
+              display: 'flex',
+              alignItems: 'center'
+            }} title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
+              {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+            </button>
+            <button style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.25rem',
+              color: 'rgba(255,255,255,0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative'
+            }} title="Notifications">
+              <BellIcon />
+              <NotificationBadge count={3} />
+            </button>
+            <button style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.25rem',
+              color: 'rgba(255,255,255,0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative'
+            }} title="Messages">
+              <MessageIcon />
+              <NotificationBadge count={5} />
+            </button>
+            <div style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '3px',
+              backgroundColor: '#f9a825',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '0.8rem',
+              fontWeight: '600',
+              color: '#1a2332',
+              cursor: 'pointer'
+            }} title="Profile">DR</div>
+            <button style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.25rem',
+              color: 'rgba(255,255,255,0.8)',
+              display: 'flex',
+              alignItems: 'center'
+            }} title="Settings">
+              <GearIcon />
+            </button>
+            <button style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.25rem',
+              color: 'rgba(255,255,255,0.8)',
+              display: 'flex',
+              alignItems: 'center'
+            }} title="Logout">
+              <LogoutIcon />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Portal Header */}
+      <div style={{
+        backgroundColor: colors.cardBg,
+        borderBottom: `1px solid ${colors.border}`
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          padding: '2rem 2rem 1.5rem'
+        }}>
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+            <div style={{
+              width: '80px',
+              height: '80px',
+              backgroundColor: portalData.color,
+              borderRadius: '8px',
+              flexShrink: 0
+            }} />
+            <div style={{ flex: 1 }}>
+              <h1 style={{ fontSize: '2rem', fontWeight: '700', color: colors.text, margin: 0, marginBottom: '0.5rem' }}>
+                {portalData.name}
+              </h1>
+              <p style={{ fontSize: '0.95rem', color: colors.textSecondary, lineHeight: '1.6', margin: 0, marginBottom: '1rem' }}>
+                {portalData.description}
+              </p>
+              <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', fontSize: '0.85rem', color: colors.textMuted }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <PeopleIcon />
+                  <strong style={{ color: colors.text }}>{portalData.members.toLocaleString()}</strong> members
+                </div>
+                <div>Created <strong style={{ color: colors.text }}>{portalData.created}</strong></div>
+                <div>Created by <strong style={{ color: colors.text }}>{portalData.creator}</strong></div>
+              </div>
+            </div>
+            <button 
+              onClick={() => setIsMember(!isMember)}
+              style={{
+                backgroundColor: isMember ? 'white' : '#f9a825',
+                color: isMember ? '#f9a825' : '#1a2332',
+                border: isMember ? '1px solid #f9a825' : 'none',
+                padding: '0.5rem 1.5rem',
+                borderRadius: '3px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                flexShrink: 0
+              }}
+            >
+              {isMember ? 'Leave' : 'Join'}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Breadcrumbs */}
+      <div style={{
+        backgroundColor: colors.footerBg,
+        borderBottom: `1px solid ${colors.border}`,
+        padding: '0.75rem 2rem'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: colors.textMuted }}>
+            <a href="#" style={{ color: '#f9a825', textDecoration: 'none' }}>Philosophy</a>
+            <span>›</span>
+            <span style={{ color: colors.textSecondary, fontWeight: '500' }}>Forum</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ position: 'relative' }}>
+              <div style={{
+                position: 'absolute',
+                left: '0.5rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: colors.textMuted,
+                display: 'flex',
+                alignItems: 'center',
+                pointerEvents: 'none'
+              }}>
+                <SearchIcon />
+              </div>
+              <input 
+                type="text" 
+                placeholder="Search forum..." 
+                style={{
+                  width: '200px',
+                  padding: '0.4rem 0.75rem 0.4rem 2rem',
+                  borderRadius: '3px',
+                  border: '1px solid ' + colors.border,
+                  fontSize: '0.8rem',
+                  backgroundColor: colors.cardBg
+                }} 
+              />
+            </div>
+            <button style={{
+              backgroundColor: '#f9a825',
+              color: '#1a2332',
+              border: 'none',
+              padding: '0.5rem 1.25rem',
+              borderRadius: '3px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              fontSize: '0.85rem'
+            }}>
+              + New Topic
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Layout */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '220px 1fr 280px',
+        gap: '2rem',
+        padding: '1.5rem 2rem',
+        maxWidth: '1400px',
+        margin: '0 auto'
+      }}>
+        {/* Left Sidebar - Portal Navigation + Categories */}
+        <aside>
+          {/* Portal Navigation */}
+          <nav style={{
+            backgroundColor: colors.cardBg,
+            border: '1px solid ' + colors.border,
+            borderRadius: '4px',
+            padding: '1rem',
+            marginBottom: '1.5rem'
+          }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: colors.textMuted, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Portal Navigation
+            </div>
+            {['Feed', 'Wiki', 'Forum', 'Podcast', 'Events', 'Files', 'Courses'].map(item => (
+              <div key={item} style={{
+                padding: '0.5rem 0',
+                cursor: 'pointer',
+                borderBottom: '1px solid ' + colors.borderLight,
+                fontSize: '0.9rem',
+                color: colors.textSecondary,
+                fontWeight: item === 'Forum' ? '600' : '400',
+                backgroundColor: item === 'Forum' ? colors.activeBg : 'transparent',
+                marginLeft: item === 'Forum' ? '-1rem' : '0',
+                paddingLeft: item === 'Forum' ? '1rem' : '0',
+                borderLeft: item === 'Forum' ? '3px solid #f9a825' : 'none'
+              }}>
+                {item}
+              </div>
+            ))}
+          </nav>
+
+          {/* Categories */}
+          <div style={{
+            backgroundColor: colors.cardBg,
+            border: '1px solid ' + colors.border,
+            borderRadius: '4px',
+            padding: '1rem'
+          }}>
+            <div style={{
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              color: colors.textMuted,
+              marginBottom: '0.75rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              Categories
+            </div>
+            {categories.map(cat => (
+              <div
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.75rem 0.5rem',
+                  cursor: 'pointer',
+                  borderLeft: selectedCategory === cat.id ? `3px solid ${cat.color}` : '3px solid transparent',
+                  marginLeft: '-1rem',
+                  paddingLeft: 'calc(0.5rem + 1rem)',
+                  backgroundColor: selectedCategory === cat.id ? colors.activeBg : 'transparent',
+                  borderBottom: '1px solid ' + colors.borderLight
+                }}
+              >
+                <div style={{
+                  width: '12px',
+                  height: '12px',
+                  backgroundColor: cat.color,
+                  borderRadius: '3px',
+                  flexShrink: 0
+                }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    fontSize: '0.85rem',
+                    fontWeight: selectedCategory === cat.id ? '600' : '400',
+                    color: colors.text
+                  }}>
+                    {cat.name}
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: '0.75rem',
+                  color: colors.textMuted,
+                  fontWeight: '500'
+                }}>
+                  {cat.count}
+                </div>
+              </div>
+            ))}
+          </div>
+        </aside>
+
+        {/* Center - Thread View */}
+        <main>
+          {/* Thread Post */}
+          <article style={{
+            backgroundColor: colors.cardBg,
+            border: '1px solid ' + colors.border,
+            borderRadius: '4px'
+          }}>
+            <div style={{ padding: '2rem' }}>
+              {/* Canonical Link */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                <span style={{ fontSize: '0.8rem', color: colors.textMuted,  }}>
+                  [[p/philosophy/f/ethics/12345]]
+                </span>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '0.25rem',
+                  color: colors.textMuted,
+                  display: 'flex',
+                  alignItems: 'center'
+                }} title="Copy link">
+                  <CopyIcon />
+                </button>
+              </div>
+
+              <h1 style={{
+                fontSize: '2rem',
+                fontWeight: '700',
+                color: colors.text,
+                margin: 0,
+                marginBottom: '1rem',
+                lineHeight: '1.3'
+              }}>
+                Is objective morality possible without religion?
+              </h1>
+
+              {/* Possible Duplicate Warning */}
+              <div style={{
+                backgroundColor: colors.footerBg,
+                border: `1px solid ${colors.border}`,
+                borderRadius: '4px',
+                padding: '0.75rem',
+                marginBottom: '1rem'
+              }}>
+                <div style={{
+                  fontSize: '0.75rem',
+                  fontWeight: '700',
+                  color: colors.textMuted,
+                  marginBottom: '0.5rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  Possible Duplicate
+                </div>
+                <div style={{ fontSize: '0.85rem', color: colors.textSecondary, marginBottom: '0.75rem', lineHeight: '1.5' }}>
+                  This topic has been covered elsewhere already. You might be interested in checking out these posts:
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <a href="#" style={{ color: '#f9a825', textDecoration: 'none', flex: 1 }}>
+                      Can morality exist without God? A secular approach
+                    </a>
+                    <span style={{ fontSize: '0.75rem', color: colors.textMuted }}>24 comments</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <a href="#" style={{ color: '#f9a825', textDecoration: 'none', flex: 1 }}>
+                      Objective ethics in atheism - is it possible?
+                    </a>
+                    <span style={{ fontSize: '0.75rem', color: colors.textMuted }}>18 comments</span>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.35rem' }}>
+                  <span style={{ fontSize: '0.75rem', color: colors.textMuted, marginRight: '0.25rem' }}>Linked by:</span>
+                  <div style={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '3px',
+                    backgroundColor: colors.avatarBg,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.65rem',
+                    fontWeight: '600',
+                    color: colors.textMuted
+                  }}>SC</div>
+                  <div style={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '3px',
+                    backgroundColor: colors.avatarBg,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.65rem',
+                    fontWeight: '600',
+                    color: colors.textMuted
+                  }}>MR</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '0.5rem' }}>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '3px',
+                  backgroundColor: colors.avatarBg,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  color: colors.textMuted
+                }}>
+                  DR
+                </div>
+                <div style={{ fontWeight: '500', fontSize: '0.95rem', color: colors.text }}>
+                  Daniel Reed
+                </div>
+                <span style={{ fontSize: '1rem' }} title="United States">🇺🇸</span>
+                <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>•</span>
+                <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>2 hours ago</span>
+                <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>•</span>
+                <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>in</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    backgroundColor: '#8b5cf6',
+                    borderRadius: '50%',
+                    flexShrink: 0
+                  }} />
+                  <a href="#" style={{ fontSize: '0.85rem', color: '#f9a825', textDecoration: 'none', fontWeight: '500' }}>
+                    Ethics & Morality
+                  </a>
+                </div>
+              </div>
+
+              {/* Separator */}
+              <div style={{ 
+                height: '1px', 
+                backgroundColor: colors.border, 
+                margin: '1.5rem 0' 
+              }} />
+
+              <div style={{
+                fontSize: '1rem',
+                lineHeight: '1.8',
+                color: colors.text,
+                marginBottom: '1.5rem'
+              }}>
+                <p style={{ margin: '0 0 1rem 0' }}>I've been thinking deeply about the <a href="#" style={{ color: '#f9a825', textDecoration: 'none' }}>Euthyphro dilemma</a> and whether we can ground moral truths in something other than divine command theory.</p>
+
+                <p style={{ margin: '0 0 1rem 0' }}>The classic formulation asks: Is something good because God commands it, or does God command it because it's good? If the former, morality seems <em style={{ fontStyle: 'italic' }}>arbitrary</em>. If the latter, morality exists independent of God.</p>
+
+                <p style={{ margin: '0 0 1rem 0' }}>This leads me to wonder if we can establish <strong style={{ fontWeight: '700' }}>objective moral truths</strong> through reason alone. Some possibilities I'm exploring:</p>
+
+                <p style={{ margin: '0 0 0.5rem 0', fontWeight: '600', fontSize: '1.05rem' }}>Kantian Deontology</p>
+                <p style={{ margin: '0 0 1rem 0' }}>The categorical imperative provides a rational basis for morality through the principle of universalizability. "Act only according to that maxim whereby you can at the same time will that it should become a universal law."</p>
+
+                <p style={{ margin: '0 0 0.5rem 0', fontWeight: '600', fontSize: '1.05rem' }}>Utilitarian Consequentialism</p>
+                <p style={{ margin: '0 0 1rem 0' }}>We can objectively measure outcomes in terms of well-being, suffering, and flourishing. The rightness of an action is determined by its consequences.</p>
+
+                <p style={{ margin: '0 0 0.5rem 0', fontWeight: '600', fontSize: '1.05rem' }}>Moral Realism</p>
+                <p style={{ margin: '0 0 1rem 0' }}>Perhaps moral facts exist as mind-independent features of reality, discoverable through reason much like mathematical truths.</p>
+
+                <p style={{ margin: '0 0 1rem 0' }}>What's your take? Can we have objective morality without appealing to divine authority? Or does removing God from the equation necessarily lead to moral relativism?</p>
+
+                {/* Citations */}
+                <div style={{
+                  marginTop: '1rem',
+                  padding: '0.75rem',
+                  backgroundColor: colors.footerBg,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '3px',
+                  fontSize: '0.85rem'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: colors.textMuted }}>
+                    <LinkIcon />
+                    <span style={{ fontWeight: '600' }}>Citations</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                    <a href="#" style={{ color: '#f9a825', textDecoration: 'none' }}>
+                      [[p/philosophy/kant-categorical-imperative]]
+                    </a>
+                    <a href="#" style={{ color: '#f9a825', textDecoration: 'none' }}>
+                      https://plato.stanford.edu/entries/morality-definition/
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+                {['ethics', 'moral-philosophy', 'religion', 'euthyphro'].map(tag => (
+                  <span key={tag} style={{
+                    backgroundColor: colors.tagBg,
+                    color: colors.tagText,
+                    padding: '0.35rem 0.75rem',
+                    borderRadius: '3px',
+                    fontSize: '0.85rem',
+                    fontWeight: '500',
+                    cursor: 'pointer'
+                  }}>{tag}</span>
+                ))}
+              </div>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '1rem 2rem',
+              borderTop: '1px solid ' + colors.borderLight,
+              borderBottom: '1px solid ' + colors.borderLight,
+              fontSize: '0.9rem',
+              color: colors.textMuted,
+              backgroundColor: colors.footerBg
+            }}>
+              <div style={{ display: 'flex', gap: '1.5rem' }}>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  color: colors.textMuted,
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  padding: '0'
+                }}>
+                  <span style={{ fontSize: '1.1rem' }}>▲</span> 24
+                </button>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: colors.textMuted,
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  padding: '0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem'
+                }}>
+                  <CommentIcon />
+                  7
+                </button>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: colors.textMuted,
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  padding: '0',
+                  display: 'flex',
+                  alignItems: 'center'
+                }} title="Flag post">
+                  <FlagIcon />
+                </button>
+              </div>
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: colors.textMuted,
+                  padding: '0',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                  <ShareIcon />
+                </button>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: colors.textMuted,
+                  padding: '0',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                  <BookmarkIcon />
+                </button>
+              </div>
+            </div>
+          </article>
+
+          {/* Annotations for main post */}
+          <div style={{
+            backgroundColor: colors.cardBg,
+            border: '1px solid ' + colors.border,
+            borderTop: 'none',
+            borderRadius: '0 0 4px 4px',
+            padding: '1rem',
+            marginTop: '-4px',
+            marginBottom: '2rem'
+          }}>
+            <div style={{ fontSize: '0.7rem', fontWeight: '600', color: colors.textMuted, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.75rem' }}>
+              Annotations (3)
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+              {/* Annotation 1 */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.85rem', padding: '0.75rem 0' }}>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                  color: colors.textMuted,
+                  fontSize: '0.8rem',
+                  fontWeight: '500',
+                  padding: '0',
+                  flexShrink: 0
+                }}>
+                  <span style={{ fontSize: '0.9rem' }}>▲</span> 5
+                </button>
+                <div style={{ flex: 1 }}>
+                  <span style={{ color: colors.textSecondary, lineHeight: '1.5' }}>Can you clarify what you mean by "moral realism" here? Are you referring to Cornell realism or something else?</span>
+                  <span style={{ color: '#f9a825', marginLeft: '0.5rem' }}>— Sarah Chen</span>
+                  <span style={{ color: colors.textMuted, marginLeft: '0.35rem' }}>• 30m ago</span>
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid ' + colors.borderLight }} />
+
+              {/* Annotation 2 */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.85rem', padding: '0.75rem 0' }}>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                  color: colors.textMuted,
+                  fontSize: '0.8rem',
+                  fontWeight: '500',
+                  padding: '0',
+                  flexShrink: 0
+                }}>
+                  <span style={{ fontSize: '0.9rem' }}>▲</span> 2
+                </button>
+                <div style={{ flex: 1 }}>
+                  <span style={{ color: colors.textSecondary, lineHeight: '1.5' }}>Have you read J.L. Mackie's Error Theory? Seems relevant to this discussion.</span>
+                  <span style={{ color: '#f9a825', marginLeft: '0.5rem' }}>— Alex Kim</span>
+                  <span style={{ color: colors.textMuted, marginLeft: '0.35rem' }}>• 15m ago</span>
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid ' + colors.borderLight }} />
+
+              {/* Annotation 3 */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.85rem', padding: '0.75rem 0' }}>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                  color: colors.textMuted,
+                  fontSize: '0.8rem',
+                  fontWeight: '500',
+                  padding: '0',
+                  flexShrink: 0
+                }}>
+                  <span style={{ fontSize: '0.9rem' }}>▲</span> 8
+                </button>
+                <div style={{ flex: 1 }}>
+                  <span style={{ color: colors.textSecondary, lineHeight: '1.5' }}>The categorical imperative quote is slightly misattributed - that's from Groundwork section 421, not the Critique.</span>
+                  <span style={{ color: '#f9a825', marginLeft: '0.5rem' }}>— Tom Bradley</span>
+                  <span style={{ color: colors.textMuted, marginLeft: '0.35rem' }}>• 2h ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Comments Section */}
+          <div style={{ marginTop: '2rem' }}>
+            <h2 style={{
+              fontSize: '1.25rem',
+              fontWeight: '600',
+              color: colors.text,
+              marginBottom: '1rem'
+            }}>
+              7 Comments
+            </h2>
+
+            {/* Add Comment */}
+            <div style={{
+              backgroundColor: colors.cardBg,
+              border: '1px solid ' + colors.border,
+              borderRadius: '4px',
+              padding: '1.25rem',
+              marginBottom: '1.5rem'
+            }}>
+              <textarea placeholder="Add a comment..." style={{
+                width: '100%',
+                minHeight: '80px',
+                border: `1px solid ${colors.border}`,
+                borderRadius: '3px',
+                padding: '0.75rem',
+                fontSize: '0.95rem',
+                fontFamily: 'inherit',
+                resize: 'vertical',
+                lineHeight: '1.6',
+                marginBottom: '0.75rem',
+                backgroundColor: colors.inputBg,
+                color: colors.text
+              }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '0.75rem' }}>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0.25rem',
+                    color: colors.textMuted,
+                    display: 'flex',
+                    alignItems: 'center'
+                  }} title="Attach file">
+                    <PaperclipIcon />
+                  </button>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0.25rem',
+                    color: colors.textMuted,
+                    display: 'flex',
+                    alignItems: 'center'
+                  }} title="Add image">
+                    <ImageIcon />
+                  </button>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0.25rem',
+                    color: colors.textMuted,
+                    display: 'flex',
+                    alignItems: 'center'
+                  }} title="Add link">
+                    <LinkIcon />
+                  </button>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0.25rem',
+                    color: colors.textMuted,
+                    display: 'flex',
+                    alignItems: 'center'
+                  }} title="Add audio">
+                    <MicIcon />
+                  </button>
+                </div>
+                <button style={{
+                  backgroundColor: '#f9a825',
+                  color: '#1a2332',
+                  border: 'none',
+                  padding: '0.5rem 1.5rem',
+                  borderRadius: '3px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem'
+                }}>
+                  Comment
+                </button>
+              </div>
+            </div>
+
+
+            {/* Comment 1 - NEW SIDEBAR LAYOUT */}
+            <div style={{ marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', gap: 0, marginLeft: '-64px' }}>
+                {/* Left sidebar - voting/trophy/flags */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 1rem 1rem 0.5rem',
+                  width: '64px'
+                }}>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <span style={{ fontSize: '1.25rem' }}>▲</span>
+                    <span style={{ fontSize: '1rem', fontWeight: '600', marginTop: '0.25rem' }}>12</span>
+                  </button>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                    <div style={{
+                      margin: '0.5rem 0',
+                      border: `2px solid ${colors.border}`,
+                      borderRadius: '50%',
+                      padding: '0.5rem',
+                      backgroundColor: colors.cardBg
+                    }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFD700">
+                        <path d="M6 3h12v5c0 3.31-2.69 6-6 6s-6-2.69-6-6V3z"/>
+                        <path d="M4 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <path d="M18 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <rect x="11" y="14" width="2" height="4"/>
+                        <rect x="8" y="18" width="8" height="3" rx="0.5"/>
+                      </svg>
+                    </div>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                  </div>
+                  
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <FlagIcon />
+                    <span style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>0</span>
+                  </button>
+                </div>
+                
+                {/* Right side - comment content */}
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    backgroundColor: colors.cardBg,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ padding: '1rem' }}>
+                      <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0 }}>
+                        Great question! I think moral realism offers the strongest case. Sam Harris makes a compelling argument in "The Moral Landscape" that we can ground morality in facts about conscious experience and well-being.
+                      </p>
+
+                      {/* Citation */}
+                      <div style={{
+                        marginTop: '0.75rem',
+                        padding: '0.75rem',
+                        backgroundColor: colors.footerBg,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '3px',
+                        fontSize: '0.85rem'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem', color: colors.textMuted }}>
+                          <LinkIcon />
+                          <span style={{ fontWeight: '600' }}>Citations</span>
+                        </div>
+                        <a href="#" style={{ color: '#f9a825', textDecoration: 'none' }}>
+                          Harris, Sam. "The Moral Landscape: How Science Can Determine Human Values" (2010)
+                        </a>
+                      </div>
+                    </div>
+                    
+                    {/* Footer metadata bar */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      backgroundColor: colors.footerBg,
+                      borderTop: `1px solid ${colors.borderLight}`
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '3px',
+                          backgroundColor: colors.avatarBg,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.85rem',
+                          fontWeight: '600',
+                          color: colors.textMuted
+                        }}>SC</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ fontWeight: '600', fontSize: '0.9rem', color: colors.text }}>Sarah Chen</span>
+                          <span style={{ fontSize: '1rem' }}>🇺🇸</span>
+                        </div>
+                        <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>1 hour ago</span>
+                      </div>
+                      
+                      <button style={{
+                        backgroundColor: colors.cardBg,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '3px',
+                        padding: '0.25rem 0.5rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        color: colors.textMuted
+                      }}>
+                        <code style={{ fontFamily: 'monospace' }}>[[p/philosophy/f/ethics/12345#c1]]</code>
+                        <CopyIcon />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Action buttons below */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.85rem'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted }}>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>reply</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>note</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>quote</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>flags</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>bookmark</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>share</button>
+                    </div>
+                    
+                    <button style={{
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      color: colors.textMuted,
+                      padding: 0
+                    }}>
+                      <ArrowUpToLineIcon />
+                      <span>show parent</span>
+                      <div style={{
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '3px',
+                        backgroundColor: colors.avatarBg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.65rem',
+                        fontWeight: '600',
+                        color: colors.textMuted,
+                        marginLeft: '0.25rem'
+                      }}>DR</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            {/* Comment 2 - Marcus - NEW SIDEBAR LAYOUT */}
+            <div style={{ marginBottom: '1rem', marginLeft: '2.5rem' }}>
+              <div style={{ display: 'flex', gap: 0, marginLeft: '-64px' }}>
+                {/* Left sidebar */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 1rem 1rem 0.5rem',
+                  width: '64px'
+                }}>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <span style={{ fontSize: '1.25rem' }}>▲</span>
+                    <span style={{ fontSize: '1rem', fontWeight: '600', marginTop: '0.25rem' }}>8</span>
+                  </button>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                    <div style={{
+                      margin: '0.5rem 0',
+                      border: `2px solid ${colors.border}`,
+                      borderRadius: '50%',
+                      padding: '0.5rem',
+                      backgroundColor: colors.cardBg
+                    }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="#CD7F32">
+                        <path d="M6 3h12v5c0 3.31-2.69 6-6 6s-6-2.69-6-6V3z"/>
+                        <path d="M4 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <path d="M18 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <rect x="11" y="14" width="2" height="4"/>
+                        <rect x="8" y="18" width="8" height="3" rx="0.5"/>
+                      </svg>
+                    </div>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                  </div>
+                  
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: '#6f42c1',
+                    padding: 0
+                  }}>
+                    <FlagIcon />
+                    <span style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>4</span>
+                  </button>
+                </div>
+                
+                {/* Right side */}
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    backgroundColor: colors.cardBg,
+                    border: '1px solid #6f42c1',
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ padding: '1rem' }}>
+                      <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0 }}>
+                        Harris's framework is interesting but runs into the is-ought problem. How do we get from descriptive facts about well-being to prescriptive moral oughts?
+                      </p>
+
+                      {/* Attachment */}
+                      <div style={{
+                        marginTop: '0.75rem',
+                        padding: '0.75rem',
+                        backgroundColor: colors.footerBg,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '3px',
+                        fontSize: '0.85rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.75rem'
+                      }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          backgroundColor: colors.avatarBg,
+                          borderRadius: '3px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: colors.textMuted
+                        }}>
+                          <PaperclipIcon />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <a href="#" style={{ color: '#f9a825', textDecoration: 'none', fontWeight: '500', fontSize: '0.85rem' }}>
+                            is-ought-problem-analysis.pdf
+                          </a>
+                          <div style={{ fontSize: '0.75rem', color: colors.textMuted, marginTop: '0.15rem' }}>
+                            248 KB
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Footer */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      backgroundColor: theme === 'light' ? '#f3f0f9' : '#2a2440',
+                      borderTop: theme === 'light' ? '1px solid #d8cfe8' : '1px solid #3d3454'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '3px',
+                          backgroundColor: colors.avatarBg,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.85rem',
+                          fontWeight: '600',
+                          color: colors.textMuted
+                        }}>MR</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ fontWeight: '600', fontSize: '0.9rem', color: colors.text }}>Marcus Rodriguez</span>
+                          <span style={{ fontSize: '1rem' }}>🇪🇸</span>
+                        </div>
+                        <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>45 minutes ago</span>
+                      </div>
+                      
+                      <button style={{
+                        backgroundColor: colors.cardBg,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '3px',
+                        padding: '0.25rem 0.5rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        color: colors.textMuted
+                      }}>
+                        <code style={{ fontFamily: 'monospace' }}>[[p/philosophy/f/ethics/12345#c1.1]]</code>
+                        <CopyIcon />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Annotations */}
+                  <div style={{
+                    padding: '1rem',
+                    backgroundColor: colors.cardBg,
+                    border: '1px solid ' + colors.border,
+                    borderTop: theme === 'light' ? '1px solid #d8cfe8' : '1px solid #3d3454',
+                    borderRadius: '0 0 4px 4px',
+                    marginTop: '-4px'
+                  }}>
+                    <div style={{ fontSize: '0.7rem', fontWeight: '600', color: colors.textMuted, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.75rem' }}>
+                      Annotations (2)
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                      {/* Annotation 1 */}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.85rem', padding: '0.75rem 0' }}>
+                        <button style={{
+                          backgroundColor: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.3rem',
+                          color: colors.textMuted,
+                          fontSize: '0.8rem',
+                          fontWeight: '500',
+                          padding: '0',
+                          flexShrink: 0
+                        }}>
+                          <span style={{ fontSize: '0.9rem' }}>▲</span> 3
+                        </button>
+                        <div style={{ flex: 1 }}>
+                          <span style={{ color: colors.textSecondary, lineHeight: '1.5' }}>Doesn't Hume's is-ought gap assume a strict fact-value dichotomy that neo-Aristotelians reject?</span>
+                          <span style={{ color: '#f9a825', marginLeft: '0.5rem' }}>— Lisa Kumar</span>
+                          <span style={{ color: colors.textMuted, marginLeft: '0.35rem' }}>• 20m ago</span>
+                        </div>
+                      </div>
+
+                      <div style={{ borderTop: '1px solid ' + colors.borderLight }} />
+
+                      {/* Annotation 2 */}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '0.85rem', padding: '0.75rem 0' }}>
+                        <button style={{
+                          backgroundColor: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.3rem',
+                          color: colors.textMuted,
+                          fontSize: '0.8rem',
+                          fontWeight: '500',
+                          padding: '0',
+                          flexShrink: 0
+                        }}>
+                          <span style={{ fontSize: '0.9rem' }}>▲</span> 1
+                        </button>
+                        <div style={{ flex: 1 }}>
+                          <span style={{ color: colors.textSecondary, lineHeight: '1.5' }}>What about Philippa Foot's natural normativity approach?</span>
+                          <span style={{ color: '#f9a825', marginLeft: '0.5rem' }}>— Emma Walsh</span>
+                          <span style={{ color: colors.textMuted, marginLeft: '0.35rem' }}>• 5m ago</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Action buttons */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.85rem'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted }}>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>reply</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>note</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>quote</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>flags</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>bookmark</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>share</button>
+                    </div>
+                    
+                    <button style={{
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      color: colors.textMuted,
+                      padding: 0
+                    }}>
+                      <ArrowUpToLineIcon />
+                      <span>show parent</span>
+                      <div style={{
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '3px',
+                        backgroundColor: colors.avatarBg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.65rem',
+                        fontWeight: '600',
+                        color: colors.textMuted,
+                        marginLeft: '0.25rem'
+                      }}>SC</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            {/* Comment 3 - Daniel - NEW SIDEBAR LAYOUT */}
+            <div style={{ marginBottom: '1rem', marginLeft: '5rem' }}>
+              <div style={{ display: 'flex', gap: 0, marginLeft: '-64px' }}>
+                {/* Left sidebar */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 1rem 1rem 0.5rem',
+                  width: '64px'
+                }}>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <span style={{ fontSize: '1.25rem' }}>▲</span>
+                    <span style={{ fontSize: '1rem', fontWeight: '600', marginTop: '0.25rem' }}>5</span>
+                  </button>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                    <div style={{
+                      margin: '0.5rem 0',
+                      border: `2px solid ${colors.border}`,
+                      borderRadius: '50%',
+                      padding: '0.5rem',
+                      backgroundColor: colors.cardBg
+                    }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="#CD7F32">
+                        <path d="M6 3h12v5c0 3.31-2.69 6-6 6s-6-2.69-6-6V3z"/>
+                        <path d="M4 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <path d="M18 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <rect x="11" y="14" width="2" height="4"/>
+                        <rect x="8" y="18" width="8" height="3" rx="0.5"/>
+                      </svg>
+                    </div>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                  </div>
+                  
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <FlagIcon />
+                    <span style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>0</span>
+                  </button>
+                </div>
+                
+                {/* Right side */}
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    backgroundColor: colors.cardBg,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ padding: '1rem' }}>
+                      <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: '0 0 1rem 0' }}>
+                        That's fair, but I think we can bridge that gap through reflective equilibrium. We start with moral intuitions and refine them with reason.
+                      </p>
+
+                      <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0 }}>
+                        As was mentioned in comment <a href="#" style={{ color: '#f9a825', textDecoration: 'none' }}>[[p/philosophy/f/ethics/12345#c2]]</a>, I think the categorical imperative gives us exactly the kind of rational framework we need without requiring divine authority.
+                      </p>
+                    </div>
+                    
+                    {/* Footer */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      backgroundColor: colors.footerBg,
+                      borderTop: `1px solid ${colors.borderLight}`
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '3px',
+                          backgroundColor: colors.avatarBg,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.85rem',
+                          fontWeight: '600',
+                          color: colors.textMuted
+                        }}>DR</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ fontWeight: '600', fontSize: '0.9rem', color: colors.text }}>Daniel Reed</span>
+                          <span style={{ fontSize: '1rem' }}>🇺🇸</span>
+                        </div>
+                        <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>20 minutes ago</span>
+                      </div>
+                      
+                      <button style={{
+                        backgroundColor: colors.cardBg,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '3px',
+                        padding: '0.25rem 0.5rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        color: colors.textMuted
+                      }}>
+                        <code style={{ fontFamily: 'monospace' }}>[[p/philosophy/f/ethics/12345#c1.1.1]]</code>
+                        <CopyIcon />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Action buttons */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.85rem'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted }}>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>reply</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>note</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>quote</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>flags</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>bookmark</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>share</button>
+                    </div>
+                    
+                    <button style={{
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      color: colors.textMuted,
+                      padding: 0
+                    }}>
+                      <ArrowUpToLineIcon />
+                      <span>show parent</span>
+                      <div style={{
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '3px',
+                        backgroundColor: colors.avatarBg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.65rem',
+                        fontWeight: '600',
+                        color: colors.textMuted,
+                        marginLeft: '0.25rem'
+                      }}>MR</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Max depth - View replies button */}
+            <div style={{ marginLeft: '7.5rem', marginTop: '1rem' }}>
+              <button style={{
+                backgroundColor: colors.footerBg,
+                border: '1px solid ' + colors.border,
+                borderRadius: '4px',
+                padding: '0.75rem 1rem',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                fontWeight: '500',
+                color: colors.textSecondary,
+                width: '100%',
+                textAlign: 'left',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}>
+                <CommentIcon />
+                View 3 replies →
+              </button>
+            </div>
+
+
+            {/* Comment 4 - Sarah Chen reply to Marcus - NEW SIDEBAR LAYOUT */}
+            <div style={{ marginBottom: '1rem', marginLeft: '5rem', marginTop: '1rem' }}>
+              <div style={{ display: 'flex', gap: 0, marginLeft: '-64px' }}>
+                {/* Left sidebar */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 1rem 1rem 0.5rem',
+                  width: '64px'
+                }}>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <span style={{ fontSize: '1.25rem' }}>▲</span>
+                    <span style={{ fontSize: '1rem', fontWeight: '600', marginTop: '0.25rem' }}>7</span>
+                  </button>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                    <div style={{
+                      margin: '0.5rem 0',
+                      border: `2px solid ${colors.border}`,
+                      borderRadius: '50%',
+                      padding: '0.5rem',
+                      backgroundColor: colors.cardBg
+                    }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFD700">
+                        <path d="M6 3h12v5c0 3.31-2.69 6-6 6s-6-2.69-6-6V3z"/>
+                        <path d="M4 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <path d="M18 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <rect x="11" y="14" width="2" height="4"/>
+                        <rect x="8" y="18" width="8" height="3" rx="0.5"/>
+                      </svg>
+                    </div>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                  </div>
+                  
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <FlagIcon />
+                    <span style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>0</span>
+                  </button>
+                </div>
+                
+                {/* Right side */}
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    backgroundColor: colors.cardBg,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ padding: '1rem' }}>
+                      <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0 }}>
+                        Both of you make excellent points. The is-ought gap is real, but perhaps we can ground morality in facts about what rational agents would choose under ideal conditions.
+                      </p>
+                    </div>
+                    
+                    {/* Footer */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      backgroundColor: colors.footerBg,
+                      borderTop: `1px solid ${colors.borderLight}`
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '3px',
+                          backgroundColor: colors.avatarBg,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.85rem',
+                          fontWeight: '600',
+                          color: colors.textMuted
+                        }}>SC</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ fontWeight: '600', fontSize: '0.9rem', color: colors.text }}>Sarah Chen</span>
+                          <span style={{ fontSize: '1rem' }}>🇺🇸</span>
+                        </div>
+                        <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>10 minutes ago</span>
+                      </div>
+                      
+                      <button style={{
+                        backgroundColor: colors.cardBg,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '3px',
+                        padding: '0.25rem 0.5rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        color: colors.textMuted
+                      }}>
+                        <code style={{ fontFamily: 'monospace' }}>[[p/philosophy/f/ethics/12345#c1.1.2]]</code>
+                        <CopyIcon />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Action buttons */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.85rem'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted }}>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>reply</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>note</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>quote</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>flags</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>bookmark</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>share</button>
+                    </div>
+                    
+                    <button style={{
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      color: colors.textMuted,
+                      padding: 0
+                    }}>
+                      <ArrowUpToLineIcon />
+                      <span>show parent</span>
+                      <div style={{
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '3px',
+                        backgroundColor: colors.avatarBg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.65rem',
+                        fontWeight: '600',
+                        color: colors.textMuted,
+                        marginLeft: '0.25rem'
+                      }}>MR</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+            {/* Comment 5 - Lisa Kumar - NEW SIDEBAR LAYOUT */}
+            <div style={{ marginBottom: '1rem', marginLeft: '2.5rem', marginTop: '1rem' }}>
+              <div style={{ display: 'flex', gap: 0, marginLeft: '-64px' }}>
+                {/* Left sidebar */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 1rem 1rem 0.5rem',
+                  width: '64px'
+                }}>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <span style={{ fontSize: '1.25rem' }}>▲</span>
+                    <span style={{ fontSize: '1rem', fontWeight: '600', marginTop: '0.25rem' }}>6</span>
+                  </button>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                    <div style={{
+                      margin: '0.5rem 0',
+                      border: `2px solid ${colors.border}`,
+                      borderRadius: '50%',
+                      padding: '0.5rem',
+                      backgroundColor: colors.cardBg
+                    }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="#CD7F32">
+                        <path d="M6 3h12v5c0 3.31-2.69 6-6 6s-6-2.69-6-6V3z"/>
+                        <path d="M4 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <path d="M18 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <rect x="11" y="14" width="2" height="4"/>
+                        <rect x="8" y="18" width="8" height="3" rx="0.5"/>
+                      </svg>
+                    </div>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                  </div>
+                  
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <FlagIcon />
+                    <span style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>0</span>
+                  </button>
+                </div>
+                
+                {/* Right side */}
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    backgroundColor: colors.cardBg,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ padding: '1rem' }}>
+                      <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0 }}>
+                        I actually think Harris addresses this in chapter 2. He argues that "well-being" is not a single metric but a multidimensional moral landscape where peaks represent flourishing.
+                      </p>
+                    </div>
+                    
+                    {/* Footer */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      backgroundColor: colors.footerBg,
+                      borderTop: `1px solid ${colors.borderLight}`
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '3px',
+                          backgroundColor: colors.avatarBg,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.85rem',
+                          fontWeight: '600',
+                          color: colors.textMuted
+                        }}>LK</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ fontWeight: '600', fontSize: '0.9rem', color: colors.text }}>Lisa Kumar</span>
+                          <span style={{ fontSize: '1rem' }}>🇮🇳</span>
+                        </div>
+                        <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>15 minutes ago</span>
+                      </div>
+                      
+                      <button style={{
+                        backgroundColor: colors.cardBg,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '3px',
+                        padding: '0.25rem 0.5rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        color: colors.textMuted
+                      }}>
+                        <code style={{ fontFamily: 'monospace' }}>[[p/philosophy/f/ethics/12345#c1.2]]</code>
+                        <CopyIcon />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Action buttons */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.85rem'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted }}>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>reply</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>note</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>quote</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>flags</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>bookmark</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>share</button>
+                    </div>
+                    
+                    <button style={{
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      color: colors.textMuted,
+                      padding: 0
+                    }}>
+                      <ArrowUpToLineIcon />
+                      <span>show parent</span>
+                      <div style={{
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '3px',
+                        backgroundColor: colors.avatarBg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.65rem',
+                        fontWeight: '600',
+                        color: colors.textMuted,
+                        marginLeft: '0.25rem'
+                      }}>SC</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            {/* Comment 6 - Lisa Kumar Comment 2 - NEW SIDEBAR LAYOUT */}
+            <div style={{ marginBottom: '1rem', marginTop: '1rem' }}>
+              <div style={{ display: 'flex', gap: 0, marginLeft: '-64px' }}>
+                {/* Left sidebar */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 1rem 1rem 0.5rem',
+                  width: '64px'
+                }}>
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <span style={{ fontSize: '1.25rem' }}>▲</span>
+                    <span style={{ fontSize: '1rem', fontWeight: '600', marginTop: '0.25rem' }}>15</span>
+                  </button>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                    <div style={{
+                      margin: '0.5rem 0',
+                      border: `2px solid ${colors.border}`,
+                      borderRadius: '50%',
+                      padding: '0.5rem',
+                      backgroundColor: colors.cardBg
+                    }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="#CD7F32">
+                        <path d="M6 3h12v5c0 3.31-2.69 6-6 6s-6-2.69-6-6V3z"/>
+                        <path d="M4 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <path d="M18 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+                        <rect x="11" y="14" width="2" height="4"/>
+                        <rect x="8" y="18" width="8" height="3" rx="0.5"/>
+                      </svg>
+                    </div>
+                    <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+                  </div>
+                  
+                  <button style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    color: colors.textMuted,
+                    padding: 0
+                  }}>
+                    <FlagIcon />
+                    <span style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>0</span>
+                  </button>
+                </div>
+                
+                {/* Right side */}
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    backgroundColor: colors.cardBg,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ padding: '1rem' }}>
+                      <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0 }}>
+                        I lean toward Kantian ethics. The categorical imperative doesn't require God - it's based on rational consistency. If I can't universalize my maxim without contradiction, it's immoral.
+                      </p>
+                    </div>
+                    
+                    {/* Footer */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      backgroundColor: colors.footerBg,
+                      borderTop: `1px solid ${colors.borderLight}`
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '3px',
+                          backgroundColor: colors.avatarBg,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.85rem',
+                          fontWeight: '600',
+                          color: colors.textMuted
+                        }}>LK</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span style={{ fontWeight: '600', fontSize: '0.9rem', color: colors.text }}>Lisa Kumar</span>
+                          <span style={{ fontSize: '1rem' }}>🇮🇳</span>
+                        </div>
+                        <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>30 minutes ago</span>
+                      </div>
+                      
+                      <button style={{
+                        backgroundColor: colors.cardBg,
+                        border: `1px solid ${colors.border}`,
+                        borderRadius: '3px',
+                        padding: '0.25rem 0.5rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        color: colors.textMuted
+                      }}>
+                        <code style={{ fontFamily: 'monospace' }}>[[p/philosophy/f/ethics/12345#c2]]</code>
+                        <CopyIcon />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Action buttons */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.85rem'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted }}>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>reply</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>note</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>quote</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>flags</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>bookmark</button>
+                      <span>·</span>
+                      <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>share</button>
+                    </div>
+                    
+                    <button style={{
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      color: colors.textMuted,
+                      padding: 0
+                    }}>
+                      <ArrowUpToLineIcon />
+                      <span>show parent</span>
+                      <div style={{
+                        width: '16px',
+                        height: '16px',
+                        borderRadius: '3px',
+                        backgroundColor: colors.avatarBg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.65rem',
+                        fontWeight: '600',
+                        color: colors.textMuted,
+                        marginLeft: '0.25rem'
+                      }}>DR</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        {/* Right Sidebar */}
+        <aside>
+          {/* Hot Topics */}
+          <div style={{
+            backgroundColor: colors.cardBg,
+            border: '1px solid ' + colors.border,
+            borderRadius: '4px',
+            padding: '1rem',
+            marginBottom: '1.5rem'
+          }}>
+            <div style={{
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              color: colors.textMuted,
+              marginBottom: '0.75rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              🔥 Hot Topics
+            </div>
+            {hotTopics.map((topic, idx) => (
+              <div key={idx} style={{
+                padding: '0.75rem 0',
+                borderBottom: idx < hotTopics.length - 1 ? `1px solid ${colors.borderLight}` : 'none',
+                display: 'flex',
+                gap: '0.75rem'
+              }}>
+                <div style={{
+                  width: '3px',
+                  backgroundColor: topic.categoryColor,
+                  borderRadius: '2px',
+                  flexShrink: 0
+                }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    fontSize: '0.85rem',
+                    color: colors.text,
+                    marginBottom: '0.35rem',
+                    fontWeight: '500',
+                    lineHeight: '1.3',
+                    cursor: 'pointer'
+                  }}>
+                    {topic.title}
+                  </div>
+                  <div style={{
+                    fontSize: '0.75rem',
+                    color: colors.textMuted,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem'
+                  }}>
+                    <CommentIcon />
+                    {topic.replies} replies
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Unanswered */}
+          <div style={{
+            backgroundColor: colors.cardBg,
+            border: '1px solid ' + colors.border,
+            borderRadius: '4px',
+            padding: '1rem',
+            marginBottom: '1.5rem'
+          }}>
+            <div style={{
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              color: colors.textMuted,
+              marginBottom: '0.75rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              ❓ Unanswered
+            </div>
+            {unanswered.map((topic, idx) => (
+              <div key={idx} style={{
+                padding: '0.75rem 0',
+                borderBottom: idx < unanswered.length - 1 ? `1px solid ${colors.borderLight}` : 'none',
+                display: 'flex',
+                gap: '0.75rem'
+              }}>
+                <div style={{
+                  width: '3px',
+                  backgroundColor: topic.categoryColor,
+                  borderRadius: '2px',
+                  flexShrink: 0
+                }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    fontSize: '0.85rem',
+                    color: colors.text,
+                    marginBottom: '0.35rem',
+                    fontWeight: '500',
+                    lineHeight: '1.3',
+                    cursor: 'pointer'
+                  }}>
+                    {topic.title}
+                  </div>
+                  <div style={{
+                    fontSize: '0.75rem',
+                    color: colors.textMuted,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem'
+                  }}>
+                    <EyeIcon />
+                    {topic.views} views
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Questions */}
+          <div style={{
+            backgroundColor: colors.cardBg,
+            border: '1px solid ' + colors.border,
+            borderRadius: '4px',
+            padding: '1rem'
+          }}>
+            <div style={{
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              color: colors.textMuted,
+              marginBottom: '0.75rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              ❔ Questions
+            </div>
+            <div style={{
+              fontSize: '0.85rem',
+              color: colors.textMuted,
+              fontStyle: 'italic'
+            }}>
+              Question topics appear here...
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}

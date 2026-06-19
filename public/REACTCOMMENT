@@ -1,0 +1,629 @@
+import React, { useState } from 'react';
+
+const IvekiStyledComment = () => {
+  const [theme, setTheme] = useState('light');
+  const [copied, setCopied] = useState(false);
+
+  // Iveki color scheme
+  const colors = theme === 'light' ? {
+    bg: '#f8f9fa',
+    cardBg: 'white',
+    text: '#212529',
+    textSecondary: '#495057',
+    textMuted: '#6c757d',
+    border: '#dee2e6',
+    borderLight: '#e9ecef',
+    footerBg: '#f8f9fa',
+    avatarBg: '#e9ecef',
+    linkColor: '#f9a825',
+    quoteBg: '#f8f9fa',
+    quoteBorder: '#6c757d'
+  } : {
+    bg: '#1a1d24',
+    cardBg: '#242831',
+    text: '#c9d1d9',
+    textSecondary: '#8b949e',
+    textMuted: '#6e7681',
+    border: '#3a3f4a',
+    borderLight: '#2d3139',
+    footerBg: '#1f2229',
+    avatarBg: '#2d3139',
+    linkColor: '#f9a825',
+    quoteBg: '#1f2229',
+    quoteBorder: '#6e7681'
+  };
+
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Icon components
+  const TriangleIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2L2 22h20L12 2z" />
+    </svg>
+  );
+
+  const TrophyIcon = ({ color }) => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill={color}>
+      <path d="M6 3h12v5c0 3.31-2.69 6-6 6s-6-2.69-6-6V3z"/>
+      <path d="M4 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+      <path d="M18 5h2v2c0 .55-.45 1-1 1s-1-.45-1-1V5z"/>
+      <rect x="11" y="14" width="2" height="4"/>
+      <rect x="8" y="18" width="8" height="3" rx="0.5"/>
+    </svg>
+  );
+
+  const FlagIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+    </svg>
+  );
+
+  const CopyIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+    </svg>
+  );
+
+  const ChevronUpIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M5 3h14"/>
+      <path d="m18 13-6-6-6 6"/>
+      <path d="M12 7v14"/>
+    </svg>
+  );
+
+  const LinkIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 000 10h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 000-10z" />
+    </svg>
+  );
+
+  const PaperclipIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+    </svg>
+  );
+
+  // Comment with expanded citations
+  const ExpandedComment = () => (
+    <div style={{ marginBottom: '2rem' }}>
+      <div style={{ fontSize: '0.75rem', fontWeight: '600', color: colors.textMuted, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        Comment with Expanded Citations/Attachments
+      </div>
+      
+      <div style={{ display: 'flex', gap: 0 }}>
+        {/* Left sidebar - voting/trophy/flags */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1rem 1rem 1rem 0.5rem',
+          width: '64px'
+        }}>
+          <button style={{
+            backgroundColor: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            color: colors.textMuted,
+            padding: 0
+          }}>
+            <span style={{ fontSize: '1.25rem' }}>▲</span>
+            <span style={{ fontSize: '1rem', fontWeight: '600', marginTop: '0.25rem' }}>42</span>
+          </button>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+            <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+            <div style={{
+              margin: '0.5rem 0',
+              border: `2px solid ${colors.border}`,
+              borderRadius: '50%',
+              padding: '0.5rem',
+              backgroundColor: colors.cardBg
+            }}>
+              <TrophyIcon color="#FFD700" />
+            </div>
+            <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+          </div>
+          
+          <button style={{
+            backgroundColor: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            color: colors.textMuted,
+            padding: 0
+          }}>
+            <FlagIcon />
+            <span style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>3</span>
+          </button>
+        </div>
+        
+        {/* Right side - comment content */}
+        <div style={{ flex: 1 }}>
+          <div style={{
+            backgroundColor: colors.cardBg,
+            border: `1px solid ${colors.border}`,
+            borderRadius: '4px',
+            overflow: 'hidden'
+          }}>
+            <div style={{ padding: '1rem' }}>
+              {/* Quoted parent */}
+              <div style={{
+                backgroundColor: colors.quoteBg,
+                border: `1px solid ${colors.border}`,
+                borderLeft: `3px solid ${colors.quoteBorder}`,
+                borderRadius: '3px',
+                padding: '0.75rem',
+                marginBottom: '0.75rem',
+                opacity: '0.85'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                  <div style={{
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '3px',
+                    backgroundColor: '#9333ea',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.65rem',
+                    fontWeight: '600',
+                    color: 'white'
+                  }}>ES</div>
+                  <span style={{ fontWeight: '500', fontSize: '0.8rem', color: colors.textMuted }}>ethicsScholar</span>
+                  <span style={{ fontSize: '0.75rem', color: colors.textMuted }}>• 3 hours ago</span>
+                </div>
+                <p style={{ lineHeight: '1.5', fontSize: '0.85rem', color: colors.textMuted, margin: 0, fontStyle: 'italic' }}>
+                  The moral framework itself remains consistent
+                </p>
+              </div>
+              
+              <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0, marginBottom: '1rem' }}>
+                I think the <strong style={{ fontWeight: '700' }}>fundamental issue</strong> here is that we're conflating epistemic and moral uncertainty. When we lack knowledge about consequences, we're dealing with <em style={{ fontStyle: 'italic' }}>epistemic limitations</em>, but the moral framework itself remains consistent.
+              </p>
+              
+              <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0 }}>
+                The real question becomes: how do we act ethically when we can't predict outcomes with certainty? This relates to what I discussed in <a href="#" style={{ color: colors.linkColor, textDecoration: 'none' }}>[[p/loricism/f/general/543]]</a> about removing obstacles caused by ignorance.
+              </p>
+              
+              {/* Citations */}
+              <div style={{
+                marginTop: '1rem',
+                paddingTop: '1rem',
+                borderTop: `1px solid ${colors.borderLight}`
+              }}>
+                <div style={{
+                  backgroundColor: colors.footerBg,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '3px',
+                  padding: '0.75rem'
+                }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '0.5rem', 
+                    marginBottom: '0.5rem', 
+                    color: colors.textMuted,
+                    fontSize: '0.85rem',
+                    fontWeight: '600'
+                  }}>
+                    <LinkIcon />
+                    <span>Citations</span>
+                  </div>
+                  <div style={{ fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                    <div>
+                      <a href="#" style={{ color: colors.linkColor, textDecoration: 'none' }}>[[p/philosophy/f/ethics/789]]</a>
+                    </div>
+                    <div>
+                      <a href="https://plato.stanford.edu" style={{ color: colors.linkColor, textDecoration: 'none' }}>https://plato.stanford.edu/entries/ethics-virtue/</a>
+                    </div>
+                    <div style={{ color: colors.textSecondary }}>
+                      Kant, I. (1785). <em>Groundwork of the Metaphysics of Morals</em>. Cambridge University Press.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Attachments */}
+              <div style={{ marginTop: '0.75rem' }}>
+                <div style={{
+                  backgroundColor: colors.footerBg,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '3px',
+                  padding: '0.75rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem'
+                }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    backgroundColor: colors.avatarBg,
+                    borderRadius: '3px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: colors.textMuted
+                  }}>
+                    <PaperclipIcon />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <a href="#" style={{ color: colors.linkColor, textDecoration: 'none', fontWeight: '500', fontSize: '0.85rem' }}>
+                      moral-uncertainty-framework.pdf
+                    </a>
+                    <div style={{ fontSize: '0.75rem', color: colors.textMuted, marginTop: '0.15rem' }}>
+                      156 KB
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Footer metadata bar */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.75rem 1rem',
+              backgroundColor: colors.footerBg,
+              borderTop: `1px solid ${colors.borderLight}`
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '3px',
+                  backgroundColor: '#3B82F6',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  color: 'white'
+                }}>PD</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontWeight: '600', fontSize: '0.9rem', color: colors.text }}>philosophyDan</span>
+                  <span style={{ fontSize: '1rem' }}>🇺🇸</span>
+                </div>
+                <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>2 hours ago</span>
+              </div>
+              
+              <button 
+                onClick={() => handleCopy('p/philosophy/f/ethics/12345#c1')}
+                style={{
+                  backgroundColor: colors.cardBg,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '3px',
+                  padding: '0.25rem 0.5rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.75rem',
+                  color: colors.textMuted
+                }}
+              >
+                <code style={{ fontFamily: 'monospace' }}>p/philosophy/f/ethics/12345#c1</code>
+                <CopyIcon />
+              </button>
+            </div>
+          </div>
+          
+          {/* Action buttons below */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0.5rem 1rem',
+            fontSize: '0.85rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted }}>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>reply</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>note</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>quote</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>flags</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>bookmark</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>share</button>
+            </div>
+            
+            <button style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              color: colors.textMuted,
+              padding: 0
+            }}>
+              <ChevronUpIcon />
+              <span>show parent</span>
+              <div style={{
+                width: '16px',
+                height: '16px',
+                borderRadius: '3px',
+                backgroundColor: '#F59E0B',
+                marginLeft: '0.25rem'
+              }}></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Collapsed version
+  const CollapsedComment = () => (
+    <div style={{ marginBottom: '2rem' }}>
+      <div style={{ fontSize: '0.75rem', fontWeight: '600', color: colors.textMuted, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        Comment with Collapsed Citations/Attachments
+      </div>
+      
+      <div style={{ display: 'flex', gap: 0 }}>
+        {/* Left sidebar */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1rem 1rem 1rem 0.5rem',
+          width: '64px'
+        }}>
+          <button style={{
+            backgroundColor: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            color: colors.textMuted,
+            padding: 0
+          }}>
+            <span style={{ fontSize: '1.25rem' }}>▲</span>
+            <span style={{ fontSize: '1rem', fontWeight: '600', marginTop: '0.25rem' }}>28</span>
+          </button>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+            <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+            <div style={{
+              margin: '0.5rem 0',
+              border: `2px solid ${colors.border}`,
+              borderRadius: '50%',
+              padding: '0.5rem',
+              backgroundColor: colors.cardBg
+            }}>
+              <TrophyIcon color="#CD7F32" />
+            </div>
+            <div style={{ width: '1px', backgroundColor: colors.border, flex: 1 }}></div>
+          </div>
+          
+          <button style={{
+            backgroundColor: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            color: colors.textMuted,
+            padding: 0
+          }}>
+            <FlagIcon />
+            <span style={{ fontSize: '0.75rem', marginTop: '0.25rem' }}>1</span>
+          </button>
+        </div>
+        
+        {/* Right side */}
+        <div style={{ flex: 1 }}>
+          <div style={{
+            backgroundColor: colors.cardBg,
+            border: `1px solid ${colors.border}`,
+            borderRadius: '4px',
+            overflow: 'hidden'
+          }}>
+            <div style={{ padding: '1rem' }}>
+              <p style={{ lineHeight: '1.6', fontSize: '0.95rem', color: colors.text, margin: 0 }}>
+                This is a simpler comment without quotes but it still has some <strong style={{ fontWeight: '700' }}>important references</strong> and attached documents that support the argument.
+              </p>
+              
+              <div style={{
+                marginTop: '1rem',
+                paddingTop: '1rem',
+                borderTop: `1px solid ${colors.borderLight}`,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+                fontSize: '0.85rem'
+              }}>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: colors.linkColor,
+                  fontWeight: '500',
+                  padding: 0
+                }}>
+                  Citations [3]
+                </button>
+                <button style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: colors.linkColor,
+                  fontWeight: '500',
+                  padding: 0
+                }}>
+                  Attachments [2]
+                </button>
+              </div>
+            </div>
+            
+            {/* Footer metadata bar */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.75rem 1rem',
+              backgroundColor: colors.footerBg,
+              borderTop: `1px solid ${colors.borderLight}`
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '3px',
+                  backgroundColor: '#10b981',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  color: 'white'
+                }}>RJ</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontWeight: '600', fontSize: '0.9rem', color: colors.text }}>researcherJane</span>
+                  <span style={{ fontSize: '1rem' }}>🇺🇸</span>
+                </div>
+                <span style={{ fontSize: '0.85rem', color: colors.textMuted }}>5 hours ago</span>
+              </div>
+              
+              <button 
+                onClick={() => handleCopy('p/philosophy/f/ethics/12346#c2')}
+                style={{
+                  backgroundColor: colors.cardBg,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '3px',
+                  padding: '0.25rem 0.5rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.75rem',
+                  color: colors.textMuted
+                }}
+              >
+                <code style={{ fontFamily: 'monospace' }}>p/philosophy/f/ethics/12346#c2</code>
+                <CopyIcon />
+              </button>
+            </div>
+          </div>
+          
+          {/* Action buttons below */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0.5rem 1rem',
+            fontSize: '0.85rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted }}>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>reply</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>note</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>quote</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>flags</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>bookmark</button>
+              <span>·</span>
+              <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0 }}>share</button>
+            </div>
+            
+            <button style={{
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              color: colors.textMuted,
+              padding: 0
+            }}>
+              <ChevronUpIcon />
+              <span>show parent</span>
+              <div style={{
+                width: '16px',
+                height: '16px',
+                borderRadius: '3px',
+                backgroundColor: '#ef4444',
+                marginLeft: '0.25rem'
+              }}></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{
+      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      backgroundColor: colors.bg,
+      minHeight: '100vh',
+      padding: '2rem'
+    }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        <div style={{ marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: '700', color: colors.text, margin: 0, marginBottom: '0.5rem' }}>
+            Iveki Comment Layout - Styled
+          </h1>
+          <p style={{ color: colors.textMuted, fontSize: '0.95rem', marginBottom: '1rem' }}>
+            New sidebar layout with Iveki color scheme
+          </p>
+          <button 
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            style={{
+              backgroundColor: colors.linkColor,
+              color: '#1a2332',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: '3px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              fontSize: '0.85rem'
+            }}
+          >
+            Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
+          </button>
+        </div>
+        
+        {copied && (
+          <div style={{
+            position: 'fixed',
+            top: '1rem',
+            right: '1rem',
+            backgroundColor: '#10b981',
+            color: 'white',
+            padding: '0.75rem 1rem',
+            borderRadius: '4px',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+            fontSize: '0.9rem',
+            fontWeight: '600'
+          }}>
+            Link copied!
+          </div>
+        )}
+        
+        <ExpandedComment />
+        <CollapsedComment />
+      </div>
+    </div>
+  );
+};
+
+export default IvekiStyledComment;

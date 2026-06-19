@@ -1,0 +1,42 @@
+/// posts.gbln
+/// Receives the New Post form and writes one shard file.
+
+use graveyard
+
+act form_get(form, key)
+    prefix | key + "="
+
+    for pair in :split(form, "&")
+        if :starts_with(pair, prefix)
+            value | :keep_after(pair, prefix)
+            parts | :split(value, "+")
+            value |= :join(parts, " ")
+            return value
+        xx
+    xx
+
+    return ..
+xx
+
+method | :req_method()
+
+if method != "POST"
+    return "Method Not Allowed"
+xx
+
+form | :req_body()
+
+title | form_get(form, "title")
+body  | form_get(form, "body")
+
+meta | {
+    "model": "post",
+    "title": title,
+}
+
+graveyard::create_shard(meta, body)
+
+:set_status(302)
+:set_header("Location", "/views/posts/new.gbln?created=1")
+
+return ..
