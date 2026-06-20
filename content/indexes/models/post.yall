@@ -1,0 +1,15 @@
+fields:
+  body:
+    id: 2
+    name: body
+    type: long_text
+    status: active
+  title:
+    id: 1
+    name: title
+    type: text
+    status: active
+id: 1
+name: post
+{}:
+{}

@@ -1,0 +1,16 @@
+use graveyard
+
+fields | [
+    {
+        "name": "title",
+        "type": "text",
+    },
+    {
+        "name": "body",
+        "type": "long_text",
+    },
+]
+
+id | graveyard::register_model_with_fields("post", fields)
+
+return "registered post model"
