@@ -5,7 +5,6 @@
 
 use graveyard
 
-
 act form_get(form, key)
     prefix | key + "="
 
@@ -21,7 +20,6 @@ act form_get(form, key)
     return ..
 xx
 
-
 method | :req_method()
 
 if method != "POST"
@@ -29,16 +27,17 @@ if method != "POST"
 xx
 
 form | :req_body()
-
+shard_body | ..
+title | form_get(form, "title")
+body | form_get(form, "body")
+shard_body |= body
 
 meta | {
     "model": "post",
+    "title": title,
 }
 
-field_value | ..
-
-nil
-graveyard::create_shard(meta, "")
+graveyard::create_shard(meta, shard_body)
 
 :set_status(302)
 :set_header("Location", "/views/post/new.gbln?created=1")

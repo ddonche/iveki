@@ -1,3 +1,5 @@
+id: 1
+name: post
 fields:
   body:
     id: 2
@@ -9,5 +11,3 @@ fields:
     name: title
     type: text
     status: active
-id: 1
-name: post

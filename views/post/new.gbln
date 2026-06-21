@@ -19,7 +19,19 @@ created | :contains(query, "created=1")
     <{ xx }>
 
     <form method="POST" action="/actions/post.gbln">
-nil
+
+        <p>
+            <label>Title</label><br>
+            <input type="text" name="title">
+        </p>
+
+
+        <p>
+            <label>Body</label><br>
+            <textarea name="body"></textarea>
+        </p>
+
+
         <p>
             <button type="submit">Create Post</button>
         </p>
