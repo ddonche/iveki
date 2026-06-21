@@ -1,0 +1,4 @@
+query | :req_query()
+
+:set_header("Content-Type", "text/plain")
+:say(:str(query))

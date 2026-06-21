@@ -1,0 +1,47 @@
+
+<{ render }>
+
+<{
+use graveyard
+
+act query_get(query, key)
+    prefix | key + "="
+
+    for pair in :split(query, "&")
+        if :starts_with(pair, prefix)
+            value | :keep_after(pair, prefix)
+            return :url_decode(value)
+        xx
+    xx
+
+    return ..
+xx
+
+query | :req_query()
+id    | query_get(query, "id")
+
+shard | graveyard::read_shard("post", id, 1)
+meta       | shard{"meta"}
+shard_body | shard{"body"}
+title | meta{"title"}
+body | shard_body
+
+}>
+
+<!doctype html>
+<html>
+<head>
+    <title>Post</title>
+</head>
+<body>
+    <h1>Post</h1>
+
+
+        <p><{ title }></p>
+
+
+        <p><{ body }></p>
+
+
+</body>
+</html>

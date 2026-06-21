@@ -1,0 +1,21 @@
+<{ render }>
+<{
+use graveyard
+greeting | "hello world"
+}>
+<!doctype html>
+<html>
+<body>
+    <p>Plain: {greeting}</p>
+    <p>Braces: <{ greeting }></p>
+</body>
+</html>
+
+<{
+act foo()
+    return 1
+xx
+
+answer | foo()
+}>
+<p>Answer: {answer}</p>
