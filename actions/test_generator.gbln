@@ -1,0 +1,5 @@
+/// test_generator.gbln
+
+use graveyard
+
+graveyard::write_generated_model_files("post")
