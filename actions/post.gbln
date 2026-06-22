@@ -2,6 +2,9 @@
 /// actions/post.gbln
 /// Generated from Graveyard model: post
 /// Do not edit by hand. Regenerate from the model registry.
+///
+/// POST with no ?id= -> create
+/// POST with ?id=N   -> update
 
 use graveyard
 
@@ -18,26 +21,63 @@ act form_get(form, key)
     return ..
 xx
 
+act query_get(query, key)
+    prefix | key + "="
+
+    for pair in :split(query, "&")
+        if :starts_with(pair, prefix)
+            value | :keep_after(pair, prefix)
+            return :url_decode(value)
+        xx
+    xx
+
+    return ..
+xx
+
 method | :req_method()
 
 if method != "POST"
     return "Method Not Allowed"
 xx
 
-form | :req_body()
+form  | :req_body()
+query | :req_query()
+id_raw | query_get(query, "id")
+id     | ..
+
+if id_raw.nix? == false
+    id |= :int(id_raw)
+xx
+
 shard_body | ..
 title | form_get(form, "title")
 body | form_get(form, "body")
 shard_body |= body
 
-meta | {
-    "model": "post",
+
+if id.nix?
+
+    meta | {
+        "model": "post",
+        "title": title,
+}
+
+    new_id | graveyard::create_shard(meta, shard_body)
+
+    :set_status(302)
+    :set_header("Location", "/views/post/show.gbln?id=" + new_id)
+
+    return ..
+xx
+
+
+meta_updates | {
     "title": title,
 }
 
-graveyard::create_shard(meta, shard_body)
+graveyard::update_shard("post", id, meta_updates, shard_body)
 
 :set_status(302)
-:set_header("Location", "/views/post/new.gbln?created=1")
+:set_header("Location", "/views/post/show.gbln?id=" + id)
 
 return ..

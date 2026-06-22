@@ -38,17 +38,28 @@ body | shard_body
 <!doctype html>
 <html>
 <head>
-    <title>Post</title>
+    <title>Edit Post</title>
 </head>
 <body>
-    <h1>Post</h1>
+    <h1>Edit Post</h1>
+
+    <form method="POST" action="/actions/post.gbln?id=<{id}>">
+
+        <p>
+            <label>Title</label><br>
+            <input type="text" name="title" value="<{ title }>">
+        </p>
 
 
-        <p><{ title }></p>
+        <p>
+            <label>Body</label><br>
+            <textarea name="body"><{ body }></textarea>
+        </p>
 
 
-        <p><{ body }></p>
-
-
+        <p>
+            <button type="submit">Save Post</button>
+        </p>
+    </form>
 </body>
 </html>
